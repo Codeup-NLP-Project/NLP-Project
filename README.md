@@ -40,7 +40,7 @@
 <a name='project_objectives'></a>
 ### Project Objectives 
 > - For this project our team is to build a model that can predict what programming language a repository will be, given the text of a README file.
-> - In addition to this, we are to build a well-documented jupyter notebook that contains the analysis of theis prediction.
+> - In addition to this, we are to build a well-documented jupyter notebook that contains the analysis of this prediction.
 > - Any abstracted modules that are created to make the presentation more clean, during the acquistion and preparation of data.
 > - Finally, we are to build a few Google slides to present toward a general audience that summarizes the findings within the project, with many visualizations.
 
@@ -49,7 +49,7 @@
 > - Build a script that will find, then scrape the README files from Github.
 > - Prepare, explore and clean the data so that it can be input into modeling.
 > - Utilizie Term Frequence (TF) Inverse Document Frequency (IDF) and a combination of the two features to assist with the modeling.
-> - Document all these steps throughly.
+> - Document all these steps thoroughly.
 
 <a name='audience'></a>
 ### Audience 
@@ -59,7 +59,7 @@
 ### Deliverables
 > - A clearly named final notebook. This notebook will contain more detailed processes other than noted within the README and have abstracted scripts to assist on readability.
 > - A README that explains what the project is, how to reproduce the project, and notes about the project.
-> - A Python module or modules that automate the data acquisistion and preparation process. These modules should be imported and used in your final notebook.
+> - A Python module or modules that automate the data acquisition and preparation process. These modules should be imported and used in your final notebook.
 
 <div style="text-align: right"><a href='#toc'>Table of Contents</a></div>
 <hr style="border-top: 10px groove tan; margin-top: 1px; margin-bottom: 1px"></hr>
@@ -85,8 +85,8 @@
 <a name='acquire'></a>
 ## Acquire Data
 ✓ _Plan_ ➜ 🟢 **Acquire** ➜ ☐ _Prepare_ ➜ ☐ _Explore_ ➜ ☐ _Model_ ➜ ☐ _Deliver_
-> - Our first issue was locating a sufficent number of README destinations to actually parse. The solution we devised was to look at person's followers on Github, then add those followers to a list.
-We would also parse up to the first 30 repository desinations from that user. Then we would iterate to the next follower and continue until we had around 30,000 repository desinations.
+> - Our first issue was locating a sufficient number of README destinations to actually parse. The solution we devised was to look at a person's followers on Github, then add those followers to a list.
+We would also parse up to the first 30 repository destinations from that user. Then we would iterate to the next follower and continue until we had around 30,000 repository destinations.
 > - Once we had our destinations, we scraped the README text and all the programming languages and their associated percentages.
 
 ### Total Missing Values
