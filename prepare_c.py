@@ -121,7 +121,7 @@ def prep_readme_data(df:pd.DataFrame, column:str, extra_words=[], exclude_words=
     df['original'] = df[column]
 
     # Clean the dataframe within the input column
-    df[column] = df[column].apply(basic_clean).apply(tokenize).apply(remove_stopwords, 
+    df['cleaned'] = df[column].apply(basic_clean).apply(tokenize).apply(remove_stopwords, 
                                    extra_words=extra_words, 
                                    exclude_words=exclude_words)
     
