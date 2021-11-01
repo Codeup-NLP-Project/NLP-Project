@@ -26,9 +26,10 @@
 6. [Hypothesis](#hypothesis)
     1. [Conclusion](#hyp_conclusion)
 7. [Modeling & Evaluation](#modeling)
-    1. [Cluster 1](#cluster_1)
-    2. [Cluster 2](#cluster_2)
-    3. [Cluster 3](#cluster_3)
+    1. [Term Frequency](#term_freq)
+    2. [Inverse Document Frequency](#inverse_doc_freq)
+8. [Project Delivery](#delivery)
+    1. [Presentation](#presentation)
 
 <hr style="border-top: 10px groove tan; margin-top: 5px; margin-bottom: 5px"></hr>
 
@@ -167,12 +168,26 @@
 > - 
 > - 
 
+<a name='term_freq'></a>
+### Term Frequency - TF
+> - 
+> - 
+
+<a name='inverse_doc_freq'></a>
+### Inverse Document Frequency - IDF
+> - 
+> - 
 
 <a name='delivery'></a>
 ## Project Delivery
 ✓ _Plan_ ➜ ✓ _Acquire_ ➜ ✓ _Prepare_ ➜ ✓ _Explore_ ➜ ✓ _Model_ ➜ 🟢 **Deliver**
 > - 
 > - 
+
+<a name='presentation'></a>
+### Presentation
+> - 
+
 
 <div style="text-align: right"><a href='#toc'>Table of Contents</a></div>
 <hr style="border-top: 10px groove tan; margin-top: 1px; margin-bottom: 1px"></hr>
