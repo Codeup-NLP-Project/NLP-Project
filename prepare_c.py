@@ -10,30 +10,22 @@ from nltk.corpus import stopwords
 import pandas as pd
 
 # ### 1. Define a function named basic_clean. It should take in a string and apply some basic text cleaning to it:
-# 
-# > * Lowercase everything
-# > * Normalize unicode characters
-# > * Replace anything that is not a letter, number, whitespace or a single quote.
-# 
+# Lowercase everything
+# Normalize unicode characters
+# Replace anything that is not a letter, number, whitespace or a single quote.
 
-
-
-def basic_clean(string):
+def basic_clean(string:str) -> str:
     '''
     This function takes in a string and
     returns the string normalized.
     '''
-    string = unicodedata.normalize('NFKD', string)             .encode('ascii', 'ignore')             .decode('utf-8', 'ignore')
+    string = unicodedata.normalize('NFKD', string).encode('ascii', 'ignore').decode('utf-8', 'ignore')
     string = re.sub(r'[^\w\s]', '', string).lower()
     return string
 
 
 # ### 2. Define a function named `tokenize`. It should take in a string and tokenize all the words in the string.
-
-# In[40]:
-
-
-def tokenize(string):
+def tokenize(string:str) -> str:
     '''
     This function takes in a string and
     returns a tokenized string.
@@ -49,10 +41,7 @@ def tokenize(string):
 
 # ### 3. Define a function named `stem`. It should accept some text and return the text after applying stemming to all the words.
 
-# In[46]:
-
-
-def stem(string):
+def stem(string:str) -> str:
     '''
     This function takes in a string and
     returns a string with words stemmed.
@@ -71,10 +60,7 @@ def stem(string):
 
 # ### 4. Define a function named `lemmatize`. It should accept some text and return the text after applying lemmatization to each word.
 
-# In[50]:
-
-
-def lemmatize(string):
+def lemmatize(string:str) -> str:
     '''
     This function takes in string for and
     returns a string with words lemmatized.
@@ -95,10 +81,7 @@ def lemmatize(string):
 # 
 # ### This function should define two optional parameters, extra_words and exclude_words. These parameters should define any additional stop words to include, and any words that we don't want to remove.
 
-# In[20]:
-
-
-def remove_stopwords(string, extra_words = [], exclude_words = []):
+def remove_stopwords(string:str, extra_words = [], exclude_words = []) -> str:
     '''
     This function takes in a string, optional extra_words and exclude_words parameters
     with default empty lists and returns a string.
@@ -122,33 +105,31 @@ def remove_stopwords(string, extra_words = [], exclude_words = []):
     return ' '.join(filtered_words)
 
 
-# ### 8. For each dataframe, produce the following columns:
-# 
-# > * `title` to hold the title
-# > * `original` to hold the original article/post content
-# > * `clean` to hold the normalized and tokenized original with the stopwords removed.
+# ### 8. For each dataframe, add the following columns:
+# > * `original` to hold the orginial text
 # > * `stemmed` to hold the stemmed version of the cleaned data.
 # > * `lemmatized` to hold the lemmatized version of the cleaned data.
+# > * The column data will contain the cleaned data
 
-# In[58]:
-
-
-def prep_article_data(df, column, extra_words=[], exclude_words=[]):
+def prep_readme_data(df:pd.DataFrame, column:str, extra_words=[], exclude_words=[]) -> pd.DataFrame:
     '''
     This function take in a df and the string name for a text column with 
-    option to pass lists for extra_words and exclude_words and
-    returns a df with the text article title, original text, stemmed text,
-    lemmatized text, cleaned, tokenized, & lemmatized text with stopwords removed.
+    option to pass lists for extra_words and exclude_words and eturns a df
+    with the columns clean, stemmed, and lemmatized text with stopwords removed.
     '''
-    df['clean'] = df[column].apply(basic_clean)                            .apply(tokenize)                            .apply(remove_stopwords, 
+    # Set the originial to the originial text
+    df['original'] = df[column]
+
+    # Clean the dataframe within the input column
+    df[column] = df[column].apply(basic_clean).apply(tokenize).apply(remove_stopwords, 
                                    extra_words=extra_words, 
                                    exclude_words=exclude_words)
     
-    df['stemmed'] = df[column].apply(basic_clean)                            .apply(tokenize)                            .apply(stem)                            .apply(remove_stopwords, 
+    df['stemmed'] = df[column].apply(basic_clean).apply(tokenize).apply(stem).apply(remove_stopwords, 
                                    extra_words=extra_words, 
                                    exclude_words=exclude_words)
     
-    df['lemmatized'] = df[column].apply(basic_clean)                            .apply(tokenize)                            .apply(lemmatize)                            .apply(remove_stopwords, 
+    df['lemmatized'] = df[column].apply(basic_clean).apply(tokenize).apply(lemmatize).apply(remove_stopwords, 
                                    extra_words=extra_words, 
                                    exclude_words=exclude_words)
     
