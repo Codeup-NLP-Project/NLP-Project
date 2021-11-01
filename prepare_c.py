@@ -1,6 +1,6 @@
 
 import unicodedata
-import re
+import re, os
 import json
 
 import nltk
@@ -162,11 +162,28 @@ def find_dominant_lang(s: str, threshold:float) -> str:
     # If no language was greater than the threshold, return None
     return None
 
-def get_readme_data(threshold = 75) -> pd.DataFrame:
+def get_readme_data(threshold = 75, extra_words=[], exclude_words=[]) -> pd.DataFrame:
     '''Takes threshold for when a programming language is representative of that README
-    text. The threshold need to be > 50
+    text. The threshold need to be > 50. Additionally adds the cleaned columns of
+    'orginial', 'stemmed', 'lemmatized' from the 'readme' column where the readme
+    column is now the CLEANED text. This also checks if the cashed file exists or not
+    if it doesn't it will be created.
+
+    Additional options that can be passed are the extra_words and exclude_words
+    which would be passed to the cleaning function and perform their associated 
+    definitions.
     '''
-    # Pull in the readme data
+    # names the file with the defined threshold at the end with the decimal
+    # replaced if it is present
+    filename = f"clean_readme_{str(threshold).replace('.', '_')}.csv"
+
+    if os.path.exists(filename):
+        return pd.read_csv(filename)
+    
+    # Let's you know if the file wasn't found
+    print(f'Did not find the file {filename}')
+
+    # Pull in the source readme data
     df = pd.read_csv('readme_data_c.csv')
     # Filter out all readmes that do not meet the threshold
     df['prog_lang'] = df.programming_language.apply(lambda x: find_dominant_lang(x, threshold))
@@ -174,5 +191,20 @@ def get_readme_data(threshold = 75) -> pd.DataFrame:
     # reset the index and remove other columns
     df = (df[~df.prog_lang.isna()].reset_index().drop(columns=[
         'programming_language', 'parsed', 'user_repo', 'index']))
-    # Return the dataframe that has been filtered
+    
+    # Let's the user know that the data is being cleaned and to be patient
+    print('cleaning data, hold your horses....')
+
+    # Sends the dataframe and with column readme as the column to be cleaned with the
+    # parameters of extra_words and exclude_words as optional parameters.
+    df = prep_readme_data(df, 'readme', extra_words=extra_words, exclude_words=exclude_words)
+
+    # Save the dataframe to the filename
+    df.to_csv(filename)
+    # Let's user know that the file was successfully saved and the name
+    print(f'saved file: {filename}')
+
+    # Return the dataframe that has been filtered and cleaned
     return df
+
+
