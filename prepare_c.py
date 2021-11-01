@@ -19,9 +19,15 @@ def basic_clean(string:str) -> str:
     This function takes in a string and
     returns the string normalized.
     '''
-    string = unicodedata.normalize('NFKD', string).encode('ascii', 'ignore').decode('utf-8', 'ignore')
-    string = re.sub(r'[^\w\s]', '', string).lower()
-    return string
+    # Check if is string
+    if type(string) == str:
+        string = unicodedata.normalize('NFKD', string).encode('ascii', 'ignore').decode('utf-8', 'ignore')
+        string = re.sub(r'[^\w\s]', '', string).lower()
+        return string
+    # if not string return same string
+    else:
+        return ''
+
 
 
 # ### 2. Define a function named `tokenize`. It should take in a string and tokenize all the words in the string.
@@ -178,7 +184,7 @@ def get_readme_data(threshold = 75, extra_words=[], exclude_words=[]) -> pd.Data
     filename = f"clean_readme_{str(threshold).replace('.', '_')}.csv"
 
     if os.path.exists(filename):
-        return pd.read_csv(filename)
+        return pd.read_csv(filename, index_col=[0])
     
     # Let's you know if the file wasn't found
     print(f'Did not find the file {filename}')
