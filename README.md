@@ -85,6 +85,9 @@
 <a name='acquire'></a>
 ## Acquire Data
 ✓ _Plan_ ➜ 🟢 **Acquire** ➜ ☐ _Prepare_ ➜ ☐ _Explore_ ➜ ☐ _Model_ ➜ ☐ _Deliver_
+> - Our first issue was locating a sufficent number of README destinations to actually parse. The solution we devised was to look at person's followers on Github, then add those followers to a list.
+We would also parse up to the first 30 repository desinations from that user. Then we would iterate to the next follower and continue until we had around 30,000 repository desinations.
+> - Once we had our destinations, we scraped the README text and all the programming languages and their associated percentages.
 
 ### Total Missing Values
 > - 
@@ -100,7 +103,6 @@
 
 <a name='data_desc'></a>
 ### DataFrame Description
-
 
 <a name='acquire_takeaways'></a>
 ### Takeaways from Acquire:
@@ -161,7 +163,6 @@
 > - 
 > -
 
-
 <a name='modeling'></a>
 ## Modeling & Evaluation
 ✓ _Plan_ ➜ ✓ _Acquire_ ➜ ✓ _Prepare_ ➜ ✓ _Explore_ ➜ 🟢 **Model** ➜ ☐ _Deliver_
@@ -177,6 +178,9 @@
 ### Inverse Document Frequency - IDF
 > - 
 > - 
+
+<div style="text-align: right"><a href='#toc'>Table of Contents</a></div>
+<hr style="border-top: 10px groove tan; margin-top: 1px; margin-bottom: 1px"></hr>
 
 <a name='delivery'></a>
 ## Project Delivery
