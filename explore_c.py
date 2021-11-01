@@ -8,14 +8,10 @@ import nltk.sentiment
 
 from wordcloud import WordCloud
 
-
 plt.rc('figure', figsize=(13, 7))
 plt.style.use('seaborn-darkgrid')
 
-from env import *
-from acquire import *
-from prepare import *
-
+from prepare_c import *
 
 class NLP_explore():
     '''Explores some plots and other features and frequencies, bigrams of 

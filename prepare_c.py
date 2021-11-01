@@ -134,3 +134,45 @@ def prep_readme_data(df:pd.DataFrame, column:str, extra_words=[], exclude_words=
                                    exclude_words=exclude_words)
     
     return df
+
+def find_dominant_lang(s: str, threshold:float) -> str:
+    '''Takes a string of programming languages and associated 
+    percentages and will return the one that is above a certain threshold
+    percentage so that is most representative of that programming language.
+    
+    Must ensure the threshold > 50
+    '''
+    # find the languages from the raw string
+    l = re.findall(r"([A-Z].*?)'", s)
+    # find the percentages from the raw string
+    p = re.findall(r"(\d*\.\d*)", s)
+    
+    # Iterate though the percentages to check if it's above threshold
+    for n in range(len(p)):
+        # Try to convert to float and check
+        try:
+            # Check if percentage composition gte to threshold
+            if float(p[n]) >= threshold:
+                # Return the language
+                return l[n]
+        # If there is an error, just return None
+        except:
+            return None
+        
+    # If no language was greater than the threshold, return None
+    return None
+
+def get_readme_data(threshold = 75) -> pd.DataFrame:
+    '''Takes threshold for when a programming language is representative of that README
+    text. The threshold need to be > 50
+    '''
+    # Pull in the readme data
+    df = pd.read_csv('readme_data_c.csv')
+    # Filter out all readmes that do not meet the threshold
+    df['prog_lang'] = df.programming_language.apply(lambda x: find_dominant_lang(x, threshold))
+    # Set the dataframe to the languages that returned a value and 
+    # reset the index and remove other columns
+    df = (df[~df.prog_lang.isna()].reset_index().drop(columns=[
+        'programming_language', 'parsed', 'user_repo', 'index']))
+    # Return the dataframe that has been filtered
+    return df
