@@ -13,6 +13,7 @@ To create the `data.json` file that contains the data.
 import os
 import json
 from typing import Dict, List, Optional, Union, cast
+import pandas as pd
 import requests
 
 from env import github_token, github_username
@@ -24,11 +25,11 @@ from env import github_token, github_username
 # TODO: Add your github username to your env.py file under the variable `github_username`
 # TODO: Add more repositories to the `REPOS` list below.
 
-REPOS = [
-    "gocodeup/codeup-setup-script",
-    "gocodeup/movies-application",
-    "torvalds/linux",
-]
+# Read the user_repo combinations
+repos = pd.read_csv('readme_data_c.csv', index_col='user_repo')
+# Convert to list
+REPOS = repos.reset_index().user_repo.to_list()
+
 
 headers = {"Authorization": f"token {github_token}", "User-Agent": github_username}
 
