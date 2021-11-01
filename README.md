@@ -1,4 +1,4 @@
-<center><h1>Natural Language Processing - Github Programming Language Prediction></center>
+<center><h1>Natural Language Processing - Github Programming Language Prediction</center>
 
 <a name ='toc'></a>
 # Table of Contents 
