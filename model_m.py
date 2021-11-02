@@ -19,10 +19,13 @@ warnings.simplefilter('ignore')
 class NLP_model():
     ''' Creates classification models using a variety of Sklearn models.
 
-        Models:
+        Methods:
         ----------------------------------------------------------------
-        KNeighborsClassifier, DecisionTreeClassifier, svm, GaussianNB, 
-        MultinomialNB, GaussianProcessClassifier, MLPClassifier, RandomForestClassifier, AdaBoostClassifier
+        > split: preforms train/test split. Can also preform X/y split if given a target array.
+        
+        > tf: gets the term frequency of the lemmatized column of the dataframe.
+        
+        > tf_idf: gets the term frequency-inverse document frequency 
         ----------------------------------------------------------------
         
         Arguments:
@@ -65,40 +68,32 @@ class NLP_model():
         models = zip(names, classifiers) # zipping models and names
         self.models = models
         
-    def split(self, target = None):
+    def split(self, df, target = None):
         '''
-        This function takes in a dataframe and, optionally, a target_var array. Performs a train, validate, 
-        test split with no stratification. Returns train, validate, and test dfs.
+        This function takes in a dataframe and, optionally, a target_var array. Performs a train,
+        test split with no stratification. Returns train and test dfs.
         '''
         
         # Checking for y specified
         if target is None: # if no y, preform regular train, validate, test split
-            train_validate, test = train_test_split(self.df, test_size=.2, 
-                                                    random_state=1312)
-            train, validate = train_test_split(train_validate, test_size=.3, 
+            train, test = train_test_split(df, test_size=.2, 
                                                     random_state=1312)
             
-            self.train, self.validate, self.test = train, validate, test # setting self versions of each df
-            return train, validate, test
+            self.train, self.test = train, validate, test # setting self versions of each df
+            return train, test
         
         # If y is specified preform X/y train, validate, test split
         else:
-            X_train_validate, X_test, y_train_validate, y_test = train_test_split(self.df.drop(columns = target), 
-                                                                            self.df[target],
-                                                                            test_size=.2, 
-                                                                            random_state=1312)
-            X_train, X_validate, y_train, y_validate = train_test_split(X_train_validate, y_train_validate,
-                                                                            test_size=.3, 
-                                                                            random_state=1312)
-            self.X_train, self.X_validate, self.X_test,\
-            self.y_train, self.y_validate, self.y_test = X_train, X_validate, X_test, y_train,\
-                                                        y_validate, y_test # attributes for each X/y df and array
+            X_train, X_test, y_train, y_test = train_test_split(df, target, test_size=.2, random_state=1312)
+            self.X_train, self.X_test,\
+            self.y_train, self.y_test = X_train, X_test, y_train, y_test # attributes for each X/y df and array
             
-            return X_train, X_validate, X_test, y_train, y_validate, y_test
+            return X_train, X_test, y_train, y_test
     
     
     def tf(self):
-        ''' Gets the term frequency of lematized column in the df
+        ''' Gets the term frequency of lematized column in the df and returns
+            a dataframe with raw value_counts, frequency, and augmented frequency
         '''
         
         # For each lemmatized doc, append to series
@@ -175,24 +170,26 @@ class NLP_model():
         target = 'label' # Setting target to label
         
         # checking for lang or top_langs
-        if self.df[target].nunique == 2: # If one lang chosen
-            y_data = self.df[target].replace([f'{self.lang.lower()}', f'not_{self.lang.lower()}'], [1,0]) # Endode lang as 1 not_lang as 0
+        if self.df[target].nunique() == 2: # If one lang chosen
+            s = self.df[target].replace([f'{self.lang.lower()}', f'not_{self.lang.lower()}'], [1,0]) # Endode lang as 1 not_lang as 0
         else: # if top_langs
             lang_list = [l.lower() for l in list(self.top_langs.index)] # getting a list of all lower case langs in top lang
             lang_list.append('other') # appending 'other' label
             
             lang_encode = list(range(1, len(self.top_langs)+1)) # list of numbers to encode top_langs as
             lang_encode.append(0) # appending 0 for other
-            y_data = self.df[target].replace(lang_list, lang_encode) # encoding top_langs
+            s = self.df[target].replace(lang_list, lang_encode) # encoding top_langs
             
-            
+        
+        X_train, X_test, y_train, y_test = self.split(self.vectorized, s)
+        
         result = [] # init empty results list
         for (name, classifier) in self.models: # iterate through zipped models
             kfold = KFold(n_splits = splits) # number of kfolds set to splits
-            scores = cross_validate(classifier, self.vectorized, y_data, cv = kfold, scoring = metric_type) # cross validate on each kfold
+            scores = cross_validate(classifier, X_train, y_train, cv = kfold, scoring = metric_type) # cross validate on each kfold
             result.append(scores) # append to results
             
-            msg = "{0}: Accuracy: {1}".format(name, scores['test_score'].mean())
+            msg = "{0}: Validate accuracy: {1}".format(name, scores['test_score'].mean())
             print(msg)
         
         results = [res['test_score'].mean() for res in result] # list comp to get mean of cross val tests for each model
