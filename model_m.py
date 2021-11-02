@@ -117,39 +117,24 @@ class NLP_model():
         
         return tf_df
     
-    def idf(self):
-        ''' Gets the inverse document frequency of the lemmatized column
-        '''
-        
-    #         top_n = list(self.tf().head().index)
-            
-    #         docs = [] # init empty series for split documents
-    #         words = [] # init empty series for unique words
-    #         for doc in self.df['lemmatized'].values:
-    #             for word in doc.split(): # iterating through each word in a split doc
-    #                 words.append(word) # add to words
-            
-    #         n_occurences = []
-    #         for doc in self.df['lemmatized'].values:
-                
-                
-    #         unique_words = pd.Series(' '.join(words.unique()))
-    #         return len(documents) / n_occurences
-    
     def tf_idf(self):
-        return 'Yet to make method'
-    
+        ''' Gets tf_idf and returns the dataframe of TfidVectorizer
+        '''
+        tfidf = TfidfVectorizer() # Make the opbject
+        bag_of_words = tfidf.fit_transform(self.df['lemmatized'].values) # Fit_transform on lemmatized
+        tfidf_df = pd.DataFrame(bag_of_words.todense(), columns=tfidf.get_feature_names()) # Wrapping in a dataframe
+        return tfidf_df
     
     def count_vectorize(self, ngram_range = (1,1)):
         ''' Preforms a count vectorizeation with ngrams of n length.
-            WARNING: If not caced on system can take a long time to process, 
+            WARNING: If not cached on system can take a long time to process, 
             creates a cacehd csv for faster use in future iterations.
         '''
         # Checking for cached vectorized csv
         filename = 'Vectorized.csv'
         if os.path.isfile(filename):
             print('Vectorized.csv already exists on your machine! Pulling it now...')
-            vector_df = pd.read_csv(filename)
+            vector_df = pd.read_csv(filename) # Creating df from csv if present
         else:
             print('''Vectorized.csv does not exist on your local machine! Creating vectorized csv and dataframe now. 
                   Vectorization may take a while, please wait...''')
@@ -159,6 +144,10 @@ class NLP_model():
             self.vocab_count = cv.vocabulary_
             # Wraps vectorized array in a dataframe with feature names as the columns
             vector_df = pd.DataFrame(vectors.todense(), columns = cv.get_feature_names())
+            
+            # Create cached csv
+            vector_df.to_csv(filename, index=False)
+            
             return vector_df
         
         # assigning vectorized dataframe as an attribute
