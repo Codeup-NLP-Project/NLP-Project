@@ -24,29 +24,46 @@ class NLP_model():
         KNeighborsClassifier, DecisionTreeClassifier, svm, GaussianNB, 
         MultinomialNB, GaussianProcessClassifier, MLPClassifier, RandomForestClassifier, AdaBoostClassifier
         ----------------------------------------------------------------
+        
+        Arguments:
+            - data: Pandas DataFrame
+            - classifiers: List of classification models
+            - names: Names of classification models
+            - lang: Specifies a language to create a lang/not_lang label from
+            - top_langs: Specifies the top n langs to create labels for, non-top_langs will be labeled 'other'
     '''
-    def __init__(self, data:pd.DataFrame, classifiers: list, names: list):
-        ''' Passes dataframe, list of actual classifiers, and names of the classifiers.
+    def __init__(self, data:pd.DataFrame, classifiers: list, names: list, lang = None, top_langs = None):
+        ''' Passes dataframe, list of actual classifiers and their names, as well as checks 
+            for kwargs lang or top_lang
             Creates a zip of classifiers and their names
         '''
+        # Creating class instance of df
+        self.df = data.copy(deep = True)
         
-        df = data.copy(deep = True)
+        #Checking for individual language specified or n_langs and creating label column
+        # For individual lang specification
+        if lang != None and top_langs == None: # Checking for lang
+            self.lang = lang # assigning lang attribute
+            # creating label column
+            self.df['label'] = self.df.prog_lang.apply(lambda x: x.lower() if x == self.lang else f'not_{self.lang.lower()}')
+        if top_langs != None and lang == None: # Checking for top_langs
+            self.top_langs = self.df.prog_lang.value_counts()[:top_langs] # getting top n langs
+            # Creating labels column from top n languages            
+            self.df['label'] = self.df.prog_lang.apply(lambda x: x.lower() if x in self.top_langs else 'other')
+        if lang != None and top_langs != None:
+            raise AttributeError('Must specify either lang or top_langs, cant create labels for both.')
+        if top_langs != None and top_langs < 2:
+            raise AttributeError("Must specify more than one lang, if you want to check for a single language, use lang argument instead.")
         
         # Clean dataframe
-        df.lemmatized = df.lemmatized.apply(basic_clean)
+        self.df.lemmatized = self.df.lemmatized.apply(basic_clean)
         
         # Creating class attributes
         self.classifiers = classifiers
         self.names = names
         
-        # Creating class instance of df
-        self.df = df.copy(deep = True)
-        
-        # Checking equal lengths of names and classifiers
-        if len(names) == len(classifiers):
-            self.models = zip(names, classifiers) # if equal length make models zip
-        else:
-            raise ValueError('List of classifiers and names must be the same length')
+        models = zip(names, classifiers) # zipping models and names
+        self.models = models
         
     def split(self, target = None):
         '''
@@ -66,7 +83,8 @@ class NLP_model():
         
         # If y is specified preform X/y train, validate, test split
         else:
-            X_train_validate, X_test, y_train_validate, y_test = train_test_split(self.df, target,
+            X_train_validate, X_test, y_train_validate, y_test = train_test_split(self.df.drop(columns = target), 
+                                                                            self.df[target],
                                                                             test_size=.2, 
                                                                             random_state=1312)
             X_train, X_validate, y_train, y_validate = train_test_split(X_train_validate, y_train_validate,
@@ -87,65 +105,107 @@ class NLP_model():
         docs = [] # init empty series for split documents
         words = [] # init empty series for unique words
         for doc in self.df['lemmatized'].values:
-            docs.append(doc.split()) # append list of split words
-            for word in docs: # iterating through each word in a split doc
-                words.append(word) # if unique add to words
+            for word in doc.split(): # iterating through each word in a split doc
+                words.append(word) # add to words
+        
+        word_ser = pd.Series(words) # turn w
         
         # Creating a df from unique words containing raw term count, 
-        tf_df = (pd.DataFrame({'raw_count': pd.Series(words).value_counts()}) # raw counts of each term
-        .assign(frequency=lambda x: x.raw_count / x.raw_count.sum()) # frequency of each term
-        .assign(augmented_frequency=lambda x: x.frequency / x.frequency.max())) # augmented freq of words
+        tf_df = (pd.DataFrame({'raw_count': word_ser.value_counts()})) # raw counts of each term
+        tf_df['frequency'] = tf_df.raw_count / tf_df.raw_count.sum() # frequency of each term
+        tf_df['augmented_frequency'] = tf_df.frequency / tf_df.frequency.max() # augmented freq of words
         
         return tf_df
     
-    #TODO Create tf_idf method
-    # def tf_idf(self):
-    #     return
-    
-        
-    def metrics(self, metric_type = 'accuracy', splits = 10):
-        ''' Creates a metrics df measuring metric_type. 
-        
+    def idf(self):
+        ''' Gets the inverse document frequency of the lemmatized column
         '''
-        results = []
-        for i, (name, classifier) in enumerate(models):
-            kfold = KFold(n_splits = splits)
-            scores = cross_validate(model, X_data, y_data, cv = kfold, scoring = 'accuracy', return_estimator=True)
-            result.append(scores)
-
-            #TODO Finish creating metrics method to return metrics after model
-
-def classifier_models(X_data, y_data, classifier_names, classifier_models):
-    '''
-        Takes two arrays:
-        - X_data = data without the target_var included
-        - y_data = an array of the target_var
-        - List of model names 
-        - List of the classifiers themselves
         
-        Preforms K-fold and cross-validation and returns a metrics dataframe with the model name and accuracy score. 
-    '''
-    # Zipping models and Classifiers
-    models = zip(classifier_names, classifier_models)
-
-    # Init empty lists
-    names = [] 
-    result = []
-    coeff = []
-
-    # Cross-validating accuracy for each model based on Train subset
-    for i, (name, model) in enumerate(models):
-        kfold = KFold(n_splits = 10)
-        scores = cross_validate(model, X_data, y_data, cv = kfold, scoring = 'accuracy', return_estimator=True)
-        result.append(scores)
-        names.append(name)
-        try:
-            coeff.append(model.coeff_)
-        except AttributeError:
-            coeff.append(None)
-        msg = "{0}: Accuracy: {1}, Coeff: {2}".format(name, scores['test_score'].mean(), coeff[i])
-        print(msg)
+    #         top_n = list(self.tf().head().index)
+            
+    #         docs = [] # init empty series for split documents
+    #         words = [] # init empty series for unique words
+    #         for doc in self.df['lemmatized'].values:
+    #             for word in doc.split(): # iterating through each word in a split doc
+    #                 words.append(word) # add to words
+            
+    #         n_occurences = []
+    #         for doc in self.df['lemmatized'].values:
+                
+                
+    #         unique_words = pd.Series(' '.join(words.unique()))
+    #         return len(documents) / n_occurences
+    
+    def tf_idf(self):
+        return 'Yet to make method'
+    
+    
+    def count_vectorize(self, ngram_range = (1,1)):
+        ''' Preforms a count vectorizeation with ngrams of n length.
+            WARNING: If not caced on system can take a long time to process, 
+            creates a cacehd csv for faster use in future iterations.
+        '''
+        # Checking for cached vectorized csv
+        filename = 'Vectorized.csv'
+        if os.path.isfile(filename):
+            print('Vectorized.csv already exists on your machine! Pulling it now...')
+            vector_df = pd.read_csv(filename)
+        else:
+            print('''Vectorized.csv does not exist on your local machine! Creating vectorized csv and dataframe now. 
+                  Vectorization may take a while, please wait...''')
+            # Using Bag of Words count vectorizer for hexamers
+            cv = CountVectorizer(ngram_range=(1,1)) # make the object
+            vectors = cv.fit_transform(self.df.lemmatized.values) # fit_transform on lemmatized col
+            self.vocab_count = cv.vocabulary_
+            # Wraps vectorized array in a dataframe with feature names as the columns
+            vector_df = pd.DataFrame(vectors.todense(), columns = cv.get_feature_names())
+            return vector_df
         
-    results = [res['test_score'].mean() for res in result]
-    metrics_df = pd.DataFrame(data = zip(names, results), columns = ['Model', 'Accuracy'])
-    return metrics_df.sort_values(by = ['Accuracy'], ascending = False)
+        # assigning vectorized dataframe as an attribute
+        self.vectorized = vector_df.copy()
+        
+        return vector_df
+        
+    
+    def metrics(self, metric_type = 'accuracy', splits = 3):
+        ''' Checks for and encodes label column
+            Creates a metrics df measuring metric_type, accuracy by default.
+            Preforms a kfold a number of times determined by splits.
+        '''
+        try: # checking if label exists, if not raise KeyError, didnt specify a lang or top_langs
+            self.df['label']
+        except KeyError:
+            return KeyError('Must specify language target in class to create models')
+        
+        try: # Checking if vectorization has already run, if yes there will be an attribute vectorized df
+            self.vectorized
+        except AttributeError: # If no vectorized attribute exists get vectorized df calling self.count_vectorize
+            print('Have not run count_vectorize method yet, running now...')
+            self.vectorized = self.count_vectorize()
+            print('All done! Moving on to modeling, this may take a while...')
+        target = 'label' # Setting target to label
+        
+        # checking for lang or top_langs
+        if self.df[target].nunique == 2: # If one lang chosen
+            y_data = self.df[target].replace([f'{self.lang.lower()}', f'not_{self.lang.lower()}'], [1,0]) # Endode lang as 1 not_lang as 0
+        else: # if top_langs
+            lang_list = [l.lower() for l in list(self.top_langs.index)] # getting a list of all lower case langs in top lang
+            lang_list.append('other') # appending 'other' label
+            
+            lang_encode = list(range(1, len(self.top_langs)+1)) # list of numbers to encode top_langs as
+            lang_encode.append(0) # appending 0 for other
+            y_data = self.df[target].replace(lang_list, lang_encode) # encoding top_langs
+            
+            
+        result = [] # init empty results list
+        for (name, classifier) in self.models: # iterate through zipped models
+            kfold = KFold(n_splits = splits) # number of kfolds set to splits
+            scores = cross_validate(classifier, self.vectorized, y_data, cv = kfold, scoring = metric_type) # cross validate on each kfold
+            result.append(scores) # append to results
+            
+            msg = "{0}: Accuracy: {1}".format(name, scores['test_score'].mean())
+            print(msg)
+        
+        results = [res['test_score'].mean() for res in result] # list comp to get mean of cross val tests for each model
+        metrics_df = pd.DataFrame(data = zip(self.names, results), columns = ['model', metric_type]) # wrap zipped model names and results in dataframe
+        return metrics_df.sort_values(by = [metric_type], ascending = False) # return sorted by metric
