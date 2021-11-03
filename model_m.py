@@ -71,7 +71,7 @@ class NLP_model():
         self.classifiers = classifiers
         self.names = names
         
-        models = {'models': (names, classifiers)} # creating dict models and names
+        models = [(classifiers[n], names[n]) for n in range(len(names))] # creating tuple list of models and names
         self.models = models
         
     def split(self, df, target = None):
@@ -133,6 +133,7 @@ class NLP_model():
         '''
         # Checking for cached vectorized csv
         print('''Creating vectorized dataframe now. Vectorization may take a while, please wait...''')
+        
         # Using Bag of Words count vectorizer for hexamers
         cv = CountVectorizer(ngram_range=(1,1)) # make the object
         vectors = cv.fit_transform(self.df.lemmatized.values) # fit_transform on lemmatized col
@@ -178,8 +179,9 @@ class NLP_model():
         
         X_train, X_test, y_train, y_test = self.split(self.vectorized, s)
         
+        
         result = [] # init empty results list
-        for model in self.models['models']: # iterate through zipped models
+        for (classifier, name) in self.models: # iterate through zipped models
             kfold = KFold(n_splits = splits) # number of kfolds set to splits
             scores = cross_validate(classifier, X_train, y_train, cv = kfold, scoring = metric_type, return_estimator=True) # cross validate on each kfold
             result.append(scores) # append to results
@@ -187,11 +189,41 @@ class NLP_model():
             msg = "{0}: Validate accuracy: {1}".format(name, scores['test_score'].mean())
             print(msg)
         
-        estimators = [res['estimator'] for res in result]
-        results = [res['test_score'] for res in result]
+        estimators = [res['estimator'] for res in result] # list comp for estimators/classifiers
+        results = [res['test_score'] for res in result] # results of validation scores
         avg_res = [round(res['test_score'].mean(), 4) * 100 for res in result] # list comp to get mean of cross val tests for each model
         metrics_df = pd.DataFrame(data = zip(self.names, avg_res), columns = ['model', f'average_{metric_type}%']) # wrap zipped model names and results in dataframe
         
+        model_scores = [(estimators[n], results[n]) for n in range(len(estimators))] # Creating list of tuples for model objects and their scores
         
-        return metrics_df.sort_values(by = [f'average_{metric_type}%'], ascending = False), zip(estimators, results) # return sorted by metric
+        # Creating attribute for testing
+        self.model_scores = model_scores
+        return metrics_df.sort_values(by = [f'average_{metric_type}%'], ascending = False) # return sorted metric df
+    
+    
+    def test_on_best(self):
+        ''' Gets best preforming model from a list of estimators garnered from cross validation
+            and tests model accuracy on Test dataset provided as an arg. Returns model.
+        '''
+        # Making list of models from models_scores
+        models = []
+        for m in self.model_scores:
+            for mdl in m[0]:
+                models.append(mdl)
+        # Making list of scores from cross_val
+        scores = []
+        for m in self.model_scores:
+            for score in m[1]:
+                scores.append(score)
         
+        # Creating list of tuples for models and scores
+        estimator_scores = [(models[n], scores[n]) for n in range(len(scores))]
+
+        # Creating helper list to get max score
+        maxs = [tup[1] for tup in estimator_scores]
+        # Getting best model and score on test
+        for tup in estimator_scores:
+            if tup[1] == max(maxs):
+                mdl = (tup[0])
+                print(f'Best model: {tup[0]}\nValidate score: {round(tup[1], 4) *100}%\nTest Score: {round(mdl.score(self.X_test, self.y_test), 3) *100}%')
+                return mdl
