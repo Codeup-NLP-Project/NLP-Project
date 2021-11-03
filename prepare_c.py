@@ -247,7 +247,11 @@ def get_readme_data(lang=None, lang_threshold = 75, z_cutoff = .5, extra_words=[
         lang_s = ''
     else:
         lang_s = f'{lang.lower()}_'
-    filename = f"{lang_s}clean_readme_{str(lang_threshold).replace('.', '_')}.csv"
+
+    # Annotate the z_score
+    z = str(z_cutoff).replace('.', '_')
+
+    filename = f"{lang_s}clean_readme_{str(lang_threshold).replace('.', '_')}_z{z}.csv"
 
     if os.path.exists(filename):
         return pd.read_csv(filename, index_col=[0])
