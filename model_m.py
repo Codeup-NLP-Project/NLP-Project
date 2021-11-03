@@ -225,5 +225,5 @@ class NLP_model():
         for tup in estimator_scores:
             if tup[1] == max(maxs):
                 mdl = (tup[0])
-                print(f'Best model: {tup[0]}\nValidate score: {tup[1]}\nTest Score: {round(mdl.score(self.X_test, self.y_test), 3) *100}%')
+                print(f'Best model: {tup[0]}\nValidate score: {round(tup[1], 4) *100}%\nTest Score: {round(mdl.score(self.X_test, self.y_test), 3) *100}%')
                 return mdl
