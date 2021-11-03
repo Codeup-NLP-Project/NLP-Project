@@ -17,10 +17,9 @@
     1. [Distributions](#distributions)
     2. [Prepare Takeaways](#prepare_takeaways)
 5. [Data Exploration](#explore)
-    1. [Hypothesis Testing](#testing)
-    2. [Correlations](#correlations)
-    3. [Pairplot](#pairplot)
-    4. [Explore Takeaways](#explore_takeaways)
+    1. [Correlations](#correlations)
+    2. [Pairplot](#pairplot)
+    3. [Explore Takeaways](#explore_takeaways)
 6. [Hypothesis](#hypothesis)
     1. [Conclusion](#hyp_conclusion)
 7. [Modeling & Evaluation](#modeling)
@@ -116,12 +115,19 @@ We would also parse up to the first 30 repository destinations from that user. T
 ## Prepare Data
 ✓ _Plan_ ➜ ✓ _Acquire_ ➜ 🟢 **Prepare** ➜ ☐ _Explore_ ➜ ☐ _Model_ ➜ ☐ _Deliver_
 > - To clean the data, we:
+
     - Converted all characters to lowercase, 
+
     - Normalized unicode characters, 
+
     - Encoded into ascii byte strings and ignored unknown characters,
+
     - Decoded into usable UTF-8 strings,
+
     - Removed anything that was not either a letter, number, or whitespace,
+
     - tokenized the data.
+
 > - To make our model more accurate, we decided to filter out words that that didn't seem to be important for identification purposes. To do this, we found the counts of each word used in the repositories for a particular programming language. Then, we removed any words that had a Z-score of .5 or below. This removed any junk words that may have been present and placed greater emphasis on the words that were most prevalent.
 > - We performed this process twice. Once for the designated programming language, and then again for all of the repositories that were NOT that language.
 > - Then we created both stemmed and lemmatized versions of the cleaned data.
@@ -168,29 +174,33 @@ We would also parse up to the first 30 repository destinations from that user. T
 ### Hypothesis Testing
 
 #### Hypothesis 1
-H<sub>0</sub>: The average message length of Javascript readme files == The average message length of all other readme files.
-H<sub>a</sub>: The average message length of Javascript readme files != The average message length of all other readme files.
+> - H<sub>0</sub>: The average message length of Javascript readme files == The average message length of all other readme files.
+> - H<sub>a</sub>: The average message length of Javascript readme files != The average message length of all other readme files.
+
 alpha: 0.05
 
 Outcome: Since the p-value is less than 0.05, we reject the null hypothesis. The average message length of Javascript readme files is significantly different than the average message length of all other readme files.
 
 #### Hypothesis 2
-H<sub>0</sub>: The average compound sentiment analysis of Javascript readme files == The average compound sentiment analysis of all other readme files.
-H<sub>a</sub>: The average compound sentiment analysis of Javascript readme files != The average compound sentiment analysis of all other readme files.
+> - H<sub>0</sub>: The average compound sentiment analysis of Javascript readme files == The average compound sentiment analysis of all other readme files.
+> - H<sub>a</sub>: The average compound sentiment analysis of Javascript readme files != The average compound sentiment analysis of all other readme files.
+
 alpha = 0.05
 
 Outcome: Since the p-value is less than alpha, we reject the null hypothesis. The average compound sentiment analysis score for Javascript readme files is significantly different than the average compound sentiment analysis score for all other readme files.
 
 #### Hypothesis 3
-H<sub>0</sub>: The average avg_word_len of Javascript readme files == The average avg_word_len of all other readme files.
-H<sub>a</sub>: The average avg_word_len of Javascript readme files != The average avg_word_len of all other readme files.
+> - H<sub>0</sub>: The average avg_word_len of Javascript readme files == The average avg_word_len of all other readme files.
+> - H<sub>a</sub>: The average avg_word_len of Javascript readme files != The average avg_word_len of all other readme files.
+
 alpha = 0.05
 
 Outcome: Since the p-value is less than 0.05, we reject the null hypothesis. The average avg_word_len for Javascript readme files is significantly different than the average avg_word_len of all other readme files.
 
 #### Hypothesis 4
-H<sub>0</sub>: The average avg_word_len of Javascript readme files == The average avg_word_len of all other readme files.
-H<sub>a</sub>: The average avg_word_len of Javascript readme files != The average avg_word_len of all other readme files.
+> - H<sub>0</sub>: The average avg_word_len of Javascript readme files == The average avg_word_len of all other readme files.
+> - H<sub>a</sub>: The average avg_word_len of Javascript readme files != The average avg_word_len of all other readme files.
+
 alpha = 0.05
 
 Outcome: Since the p-value is less than 0.05, we reject the null hypothesis. The average word_count for Javascript readme files is significantly different than the average word_count of all other readme files.
