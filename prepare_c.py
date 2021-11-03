@@ -10,6 +10,7 @@ import nltk
 from nltk.tokenize.toktok import ToktokTokenizer
 from nltk.corpus import stopwords
 from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.model_selection import train_test_split
 from scipy.stats import zscore
 
 import pandas as pd
@@ -322,3 +323,25 @@ def get_readme_data(lang=None, lang_threshold = 75, z_cutoff = .5, extra_words=[
 
     # Return the dataframe that has been filtered and cleaned
     return df
+
+def split(df, target = None):
+    '''
+    This function takes in a dataframe and, optionally, a target_var array. Performs a train,
+    test split with no stratification. Returns train and test dfs.
+    '''
+    
+    # Checking for y specified
+    if target is None: # if no y, preform regular train, validate, test split
+        train, test = train_test_split(df, test_size=.2, 
+                                    random_state=1312)
+        
+        train, test = train, test # setting self versions of each df
+        return train, test
+    
+    # If y is specified preform X/y train, validate, test split
+    else:
+        X_train, X_test, y_train, y_test = train_test_split(df, target, test_size=.2, random_state=1312)
+        X_train, X_test,\
+        y_train, y_test = X_train, X_test, y_train, y_test # attributes for each X/y df and array
+        
+        return X_train, X_test, y_train, y_test
