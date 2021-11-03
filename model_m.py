@@ -1,6 +1,9 @@
 import pandas as pd
 import numpy as np
 
+from prepare_c import *
+
+
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.tree import DecisionTreeClassifier
 from sklearn import svm
@@ -12,6 +15,9 @@ from sklearn.neural_network import MLPClassifier
 from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier
 from sklearn.metrics import classification_report, accuracy_score
 from sklearn.model_selection import KFold, cross_val_score, cross_validate
+from sklearn.model_selection import train_test_split
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.feature_extraction.text import TfidfVectorizer
 import warnings
 warnings.simplefilter('ignore')
 
@@ -65,7 +71,7 @@ class NLP_model():
         self.classifiers = classifiers
         self.names = names
         
-        models = zip(names, classifiers) # zipping models and names
+        models = {'models': (names, classifiers)} # creating dict models and names
         self.models = models
         
     def split(self, df, target = None):
@@ -77,9 +83,9 @@ class NLP_model():
         # Checking for y specified
         if target is None: # if no y, preform regular train, validate, test split
             train, test = train_test_split(df, test_size=.2, 
-                                                    random_state=1312)
+                                          random_state=1312)
             
-            self.train, self.test = train, validate, test # setting self versions of each df
+            self.train, self.test = train, test # setting self versions of each df
             return train, test
         
         # If y is specified preform X/y train, validate, test split
@@ -126,25 +132,14 @@ class NLP_model():
             creates a cacehd csv for faster use in future iterations.
         '''
         # Checking for cached vectorized csv
-        filename = 'Vectorized.csv'
-        if os.path.isfile(filename):
-            print('Vectorized.csv already exists on your machine! Pulling it now...')
-            vector_df = pd.read_csv(filename) # Creating df from csv if present
-        else:
-            print('''Vectorized.csv does not exist on your local machine! Creating vectorized csv and dataframe now. 
-                  Vectorization may take a while, please wait...''')
-            # Using Bag of Words count vectorizer for hexamers
-            cv = CountVectorizer(ngram_range=(1,1)) # make the object
-            vectors = cv.fit_transform(self.df.lemmatized.values) # fit_transform on lemmatized col
-            self.vocab_count = cv.vocabulary_
-            # Wraps vectorized array in a dataframe with feature names as the columns
-            vector_df = pd.DataFrame(vectors.todense(), columns = cv.get_feature_names())
-            
-            # Create cached csv
-            vector_df.to_csv(filename, index=False)
-            
-            return vector_df
-        
+        print('''Creating vectorized dataframe now. Vectorization may take a while, please wait...''')
+        # Using Bag of Words count vectorizer for hexamers
+        cv = CountVectorizer(ngram_range=(1,1)) # make the object
+        vectors = cv.fit_transform(self.df.lemmatized.values) # fit_transform on lemmatized col
+        self.vocab_count = cv.vocabulary_
+        # Wraps vectorized array in a dataframe with feature names as the columns
+        vector_df = pd.DataFrame(vectors.todense(), columns = cv.get_feature_names())
+                
         # assigning vectorized dataframe as an attribute
         self.vectorized = vector_df.copy()
         
@@ -184,14 +179,19 @@ class NLP_model():
         X_train, X_test, y_train, y_test = self.split(self.vectorized, s)
         
         result = [] # init empty results list
-        for (name, classifier) in self.models: # iterate through zipped models
+        for model in self.models['models']: # iterate through zipped models
             kfold = KFold(n_splits = splits) # number of kfolds set to splits
-            scores = cross_validate(classifier, X_train, y_train, cv = kfold, scoring = metric_type) # cross validate on each kfold
+            scores = cross_validate(classifier, X_train, y_train, cv = kfold, scoring = metric_type, return_estimator=True) # cross validate on each kfold
             result.append(scores) # append to results
             
             msg = "{0}: Validate accuracy: {1}".format(name, scores['test_score'].mean())
             print(msg)
         
-        results = [res['test_score'].mean() for res in result] # list comp to get mean of cross val tests for each model
-        metrics_df = pd.DataFrame(data = zip(self.names, results), columns = ['model', metric_type]) # wrap zipped model names and results in dataframe
-        return metrics_df.sort_values(by = [metric_type], ascending = False) # return sorted by metric
+        estimators = [res['estimator'] for res in result]
+        results = [res['test_score'] for res in result]
+        avg_res = [round(res['test_score'].mean(), 4) * 100 for res in result] # list comp to get mean of cross val tests for each model
+        metrics_df = pd.DataFrame(data = zip(self.names, avg_res), columns = ['model', f'average_{metric_type}%']) # wrap zipped model names and results in dataframe
+        
+        
+        return metrics_df.sort_values(by = [f'average_{metric_type}%'], ascending = False), zip(estimators, results) # return sorted by metric
+        
