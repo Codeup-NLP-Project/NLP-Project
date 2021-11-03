@@ -17,9 +17,10 @@
     1. [Distributions](#distributions)
     2. [Prepare Takeaways](#prepare_takeaways)
 5. [Data Exploration](#explore)
-    1. [Correlations](#correlations)
-    2. [Pairplot](#pairplot)
-    3. [Explore Takeaways](#explore_takeaways)
+    1. [Hypothesis Testing](#testing)
+    2. [Correlations](#correlations)
+    3. [Pairplot](#pairplot)
+    4. [Explore Takeaways](#explore_takeaways)
 6. [Hypothesis](#hypothesis)
     1. [Conclusion](#hyp_conclusion)
 7. [Modeling & Evaluation](#modeling)
@@ -87,24 +88,25 @@ We would also parse up to the first 30 repository destinations from that user. T
 > - To determine the primary programming language of any repository, we first read in the percentages of the programming languages used in it and set a percentage threshold. So, if a programming language was at or above that threshold, it was considered the primary programming language of the repository.
 
 ### Total Missing Values
-> - 15
+> - 0
 
 <a name='data_dict'></a>
 ### DataFrame Dict
 
 | Feature           | Datatype                         | Definition                                                 |
 |:------------------|:---------------------------------|:-----------------------------------------------------------|
-| readme            | 13777 non-null: object           | Original readme content of the scraped repository          |
-| prog_lang         | 13792 non-null: object           | The predominant programming language used in the repository|
-| original          | 13792 non-null: object           | Original readme content of the scraped repository          |
-| stemmed           | 13777 non-null: object           | The cleaned, stemmed version of the readme                 |
-| lemmatized        | 13777 non-null: object           | The cleaned, lemmatized version of the readme              |
+| prog_lang         | 5728 non-null: object           | The predominant programming language used in the repository|
+| original          | 5728 non-null: object           | Original readme content of the scraped repository          |
+| cleaned           | 5728 non-null: object           | The cleaned version of the readme                          |
+| label             | 5728 non-null: object           | The programming language label; the target variable
+| stemmed           | 5728 non-null: object           | The cleaned, stemmed version of the readme                 |
+| lemmatized        | 5728 non-null: object           | The cleaned, lemmatized version of the readme              |
 
 <a name='acquire_takeaways'></a>
 ### Takeaways from Acquire:
-> - Target Variable: prog_lang
-> - This dataframe currently has 13,792 rows and 5 columns.
-> - There are 15 missing values.
+> - Target Variable: label
+> - This dataframe currently has 5,728 rows and 6 columns.
+> - There are 0 missing values.
 > - All columns are string object types.
 
 <div style="text-align: right"><a href='#toc'>Table of Contents</a></div>
@@ -137,7 +139,7 @@ We would also parse up to the first 30 repository destinations from that user. T
 <a name='explore'></a>
 ## Explore Data
 ✓ _Plan_ ➜ ✓ _Acquire_ ➜ ✓ _Prepare_ ➜ 🟢 **Explore** ➜ ☐ _Model_ ➜ ☐ _Deliver_
-> - 
+> - Utilizing a class, we explored the data and tested several hypotheses.
 > - 
 
 <a name='correlations'></a>
@@ -163,9 +165,35 @@ We would also parse up to the first 30 repository destinations from that user. T
 <hr style="border-top: 10px groove tan; margin-top: 1px; margin-bottom: 1px"></hr>
 
 <a name='hypothesis'></a>
-### Hypothesis 1 
-> - 
-> -
+### Hypothesis Testing
+
+#### Hypothesis 1
+H<sub>0</sub>: The average message length of Javascript readme files == The average message length of all other readme files.
+H<sub>a</sub>: The average message length of Javascript readme files != The average message length of all other readme files.
+alpha: 0.05
+
+Outcome: Since the p-value is less than 0.05, we reject the null hypothesis. The average message length of Javascript readme files is significantly different than the average message length of all other readme files.
+
+#### Hypothesis 2
+H<sub>0</sub>: The average compound sentiment analysis of Javascript readme files == The average compound sentiment analysis of all other readme files.
+H<sub>a</sub>: The average compound sentiment analysis of Javascript readme files != The average compound sentiment analysis of all other readme files.
+alpha = 0.05
+
+Outcome: Since the p-value is less than alpha, we reject the null hypothesis. The average compound sentiment analysis score for Javascript readme files is significantly different than the average compound sentiment analysis score for all other readme files.
+
+#### Hypothesis 3
+H<sub>0</sub>: The average avg_word_len of Javascript readme files == The average avg_word_len of all other readme files.
+H<sub>a</sub>: The average avg_word_len of Javascript readme files != The average avg_word_len of all other readme files.
+alpha = 0.05
+
+Outcome: Since the p-value is less than 0.05, we reject the null hypothesis. The average avg_word_len for Javascript readme files is significantly different than the average avg_word_len of all other readme files.
+
+#### Hypothesis 4
+H<sub>0</sub>: The average avg_word_len of Javascript readme files == The average avg_word_len of all other readme files.
+H<sub>a</sub>: The average avg_word_len of Javascript readme files != The average avg_word_len of all other readme files.
+alpha = 0.05
+
+Outcome: Since the p-value is less than 0.05, we reject the null hypothesis. The average word_count for Javascript readme files is significantly different than the average word_count of all other readme files.
 
 <a name='modeling'></a>
 ## Modeling & Evaluation
