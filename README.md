@@ -174,12 +174,6 @@ We would also parse up to the first 30 repository destinations from that user. T
 |:-:|:-:|
 |![Javascript_Wordcloud_Plot](images/javascript_wordcloud.png)|![Not_Javascript_Wordcloud_Plot](images/not_javascript_wordcloud.png)|
 
-### Wordcloud Plots
-
-|<center>Javascript</center>|<center>Non-Javascript</center>|
-|:-:|:-:|
-|![Javascript_Wordcloud_Plot](images/javascript_wordcloud.png)|![Not_Javascript_Wordcloud_Plot](images/not_javascript_wordcloud.png)|
-
 <a name='explore_takeaways'></a>
 ### Explore Takeaways
 
