@@ -20,10 +20,10 @@
     1. [Explore Takeaways](#explore_takeaways)
     2. [Hypothesis](#hypothesis)
 6. [Modeling & Evaluation](#modeling)
-    1. [Term Frequency](#term_freq)
-    2. [Inverse Document Frequency](#inverse_doc_freq)
+    1. [Modeling Takeaways] (#model_takeaways)
 6. [Project Delivery](#delivery)
-    1. [Presentation](#presentation)
+    1. [Conclusions & Next Steps](#conclusions_next_steps)
+    2. [Project Replication](#replication)
 
 <hr style="border-top: 10px groove tan; margin-top: 5px; margin-bottom: 5px"></hr>
 
@@ -86,8 +86,6 @@ We would also parse up to the first 30 repository destinations from that user. T
 > - Once we had our destinations, we scraped the README text and all the programming languages and their associated percentages.
 > - To determine the primary programming language of any repository, we first read in the percentages of the programming languages used in it and set a percentage threshold. So, if a programming language was at or above that threshold, it was considered the primary programming language of the repository.
 
-### Total Missing Values
-> - 0
 
 <a name='data_dict'></a>
 ### DataFrame Dict
@@ -218,6 +216,14 @@ We would also parse up to the first 30 repository destinations from that user. T
 > - Utilized a class method using cross-validate to fit and evaluate models on a specified number of KFolded splits, garnering an average validate accuracy score for each classifier type.
 > - Chose the best model from cross-validation and evaluated the accuracy on out-of-sample test data.
 
+<a name='model_takeaways'></a>
+### Modeling Takeaways
+
+> - Got best performance from classifiers with KFolds set to 10.
+> - The best performing classifier types were Multinomial Naive Bayes classifiers with alpha = 0.5, averaging 94.13% across all cross-validate splits.
+> - Best single model accuracy score on a cross-validation test (validate) subset from was 95.42%
+> - Using that model, achieved an out-of-sample test accuracy score of 94.8%.
+
 <div style="text-align: right"><a href='#toc'>Table of Contents</a></div>
 <hr style="border-top: 10px groove tan; margin-top: 1px; margin-bottom: 1px"></hr>
 
@@ -225,11 +231,13 @@ We would also parse up to the first 30 repository destinations from that user. T
 ## Project Delivery
 ✓ _Plan_ ➜ ✓ _Acquire_ ➜ ✓ _Prepare_ ➜ ✓ _Explore_ ➜ ✓ _Model_ ➜ 🟢 **Deliver**
 
+<a name='conclusions_next_steps'></a>
 ### Conclusion and Next Steps
 > - Javascript repository `README` files have consistent, identifying characteristics such as average word length, message length, and word count.
 > - With more time, we would like to build a multi-class classification model and do more feature engineering.
 
-### Replication
+<a name='replication'></a>
+### Project Replication
 > - Download the `acquire.py`, `prepare.py`, `explore.py`, and `model.py` modules to your working directory.
 > - Download the all files from dataset which can be found at <a href='https://www.kaggle.com/shankanater/data-to-recreate-nlp-project/download'>Kaggle</a>
 > - Run the `final_report.ipynb` Juypter Notebook.
