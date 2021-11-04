@@ -216,8 +216,9 @@ We would also parse up to the first 30 repository destinations from that user. T
 > - Utilized a class method using cross-validate to fit and evaluate models on a specified number of KFolded splits, garnering an average validate accuracy score for each classifier type.
 > - Chose the best model from cross-validation and evaluated the accuracy on out-of-sample test data.
 
-#### Cross-validation:
+#### K-Fold and Cross-validation References:
 > - For more information on the workings of cross-validation, visit https://scikit-learn.org/stable/modules/cross_validation.html
+> - For information on how cross-validation works in conjunction with K-Folding visit https://scikit-learn.org/stable/modules/cross_validation.html#k-fold
 
 <a name='model_takeaways'></a>
 ### Modeling Takeaways
