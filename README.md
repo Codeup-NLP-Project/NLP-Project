@@ -213,7 +213,7 @@ We would also parse up to the first 30 repository destinations from that user. T
 ✓ _Plan_ ➜ ✓ _Acquire_ ➜ ✓ _Prepare_ ➜ ✓ _Explore_ ➜ 🟢 **Model** ➜ ☐ _Deliver_
 
 > - Created a class to vectorize and create, fit, and evaluate models on in and out-of-sample datasets.
-> - Utilized a class method using cross-validate to fit and evaluate models on a specified number of KFolded splits, garnering an average validate accuracy score for each classifier type.
+> - Utilized a class method using cross-validate to fit and evaluate models on a specified number of K-Folded splits, garnering an average validate accuracy score for each classifier type.
 > - Chose the best model from cross-validation and evaluated the accuracy on out-of-sample test data.
 
 #### K-Fold and Cross-validation References:
@@ -223,7 +223,7 @@ We would also parse up to the first 30 repository destinations from that user. T
 <a name='model_takeaways'></a>
 ### Modeling Takeaways
 
-> - Got best performance from classifiers with KFolds set to 10.
+> - Got best performance from classifiers with K-Folds set to 10.
 > - The best performing classifier types were Multinomial Naive Bayes classifiers with alpha = 0.5, averaging 94.13% across all cross-validate splits.
 > - Best single model accuracy score on a cross-validation test (validate) subset from was 95.42%
 > - Using that model, achieved an out-of-sample test accuracy score of 94.8%.
