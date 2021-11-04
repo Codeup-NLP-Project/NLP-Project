@@ -147,19 +147,6 @@ We would also parse up to the first 30 repository destinations from that user. T
 > - We created visualizations for the distributions of the compound sentiment analysis score.
 > - We created word clouds for quick visualization of the most common words.
 
-<a name='correlations'></a>
-### Correlations
-
-
-#### Correlation Heatmap
-
-
-#### Correlations Table
-
-
-<a name='pairplot'></a>
-### Pair Plot
-
 
 <a name='explore_takeaways'></a>
 ### Explore Takeaways
@@ -200,18 +187,10 @@ We would also parse up to the first 30 repository destinations from that user. T
 <a name='modeling'></a>
 ## Modeling & Evaluation
 ✓ _Plan_ ➜ ✓ _Acquire_ ➜ ✓ _Prepare_ ➜ ✓ _Explore_ ➜ 🟢 **Model** ➜ ☐ _Deliver_
-> - 
-> - 
 
-<a name='term_freq'></a>
-### Term Frequency - TF
-> - 
-> - 
-
-<a name='inverse_doc_freq'></a>
-### Inverse Document Frequency - IDF
-> - 
-> - 
+> - Created a class to vectorize and create, fit, and evaluate models on in and out-of-sample datasets.
+> - Utilized a class method using cross-validate to fit and evaluate models on a specified number of KFolded splits, garnering an average validate accuracy score for each classifier type.
+> - Chose the best model from cross-validation and evaluated the accuracy on out-of-sample test data.
 
 <div style="text-align: right"><a href='#toc'>Table of Contents</a></div>
 <hr style="border-top: 10px groove tan; margin-top: 1px; margin-bottom: 1px"></hr>
