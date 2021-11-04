@@ -20,7 +20,7 @@
     1. [Explore Takeaways](#explore_takeaways)
     2. [Hypothesis](#hypothesis)
 6. [Modeling & Evaluation](#modeling)
-    1. [Modeling Takeaways] (#model_takeaways)
+    1. [Modeling Takeaways](#model_takeaways)
 6. [Project Delivery](#delivery)
     1. [Conclusions & Next Steps](#conclusions_next_steps)
     2. [Project Replication](#replication)
