@@ -114,20 +114,13 @@ We would also parse up to the first 30 repository destinations from that user. T
 <a name='prep_data'></a>
 ## Prepare Data
 ✓ _Plan_ ➜ ✓ _Acquire_ ➜ 🟢 **Prepare** ➜ ☐ _Explore_ ➜ ☐ _Model_ ➜ ☐ _Deliver_
-> - To clean the data, we:
 
-    - Converted all characters to lowercase, 
-
-    - Normalized unicode characters, 
-
-    - Encoded into ascii byte strings and ignored unknown characters,
-
-    - Decoded into usable UTF-8 strings,
-
-    - Removed anything that was not either a letter, number, or whitespace,
-
-    - tokenized the data.
-
+> - Converted all characters to lowercase, 
+> - Normalized unicode characters, 
+> - Encoded into ascii byte strings and ignored unknown characters,
+> - Decoded into usable UTF-8 strings,
+> - Removed anything that was not either a letter, number, or whitespace,
+> - tokenized the data.
 > - To make our model more accurate, we decided to filter out words that that didn't seem to be important for identification purposes. To do this, we found the counts of each word used in the repositories for a particular programming language. Then, we removed any words that had a Z-score of .5 or below. This removed any junk words that may have been present and placed greater emphasis on the words that were most prevalent.
 > - We performed this process twice. Once for the designated programming language, and then again for all of the repositories that were NOT that language.
 > - Then we created both stemmed and lemmatized versions of the cleaned data.
@@ -135,8 +128,8 @@ We would also parse up to the first 30 repository destinations from that user. T
 
 <a name='prepare_takeaways'></a>
 ### Prepare Takeaways
-> - 
-> - 
+
+> - The data was cleaned and is ready for exploration on the train data set.
                      
 <div style="text-align: right"><a href='#toc'>Table of Contents</a></div>
 <hr style="border-top: 10px groove tan; margin-top: 1px; margin-bottom: 1px"></hr>
@@ -145,8 +138,11 @@ We would also parse up to the first 30 repository destinations from that user. T
 <a name='explore'></a>
 ## Explore Data
 ✓ _Plan_ ➜ ✓ _Acquire_ ➜ ✓ _Prepare_ ➜ 🟢 **Explore** ➜ ☐ _Model_ ➜ ☐ _Deliver_
+
 > - Utilizing a class, we explored the data and tested several hypotheses.
-> - 
+> - We compared word, bigram, and trigram counts and created visualizations for each.
+> - We created visualizations for the distributions of the compound sentiment analysis score.
+> - We created word clouds for quick visualization of the most common words.
 
 <a name='correlations'></a>
 ### Correlations
@@ -164,8 +160,9 @@ We would also parse up to the first 30 repository destinations from that user. T
 
 <a name='explore_takeaways'></a>
 ### Explore Takeaways
-> - 
-> - 
+
+> - The top 5 most common words in Javascript readme files occur in Javascript files much more frequently than all other readme files.
+> - Javascript sentiment analysis compound scores tend to be more positive than all others, while all others tend to be more neutral than Javascript.
 
 <div style="text-align: right"><a href='#toc'>Table of Contents</a></div>
 <hr style="border-top: 10px groove tan; margin-top: 1px; margin-bottom: 1px"></hr>
@@ -176,34 +173,30 @@ We would also parse up to the first 30 repository destinations from that user. T
 #### Hypothesis 1
 > - H<sub>0</sub>: The average message length of Javascript readme files == The average message length of all other readme files.
 > - H<sub>a</sub>: The average message length of Javascript readme files != The average message length of all other readme files.
+> - alpha: 0.05
 
-alpha: 0.05
-
-Outcome: Since the p-value is less than 0.05, we reject the null hypothesis. The average message length of Javascript readme files is significantly different than the average message length of all other readme files.
+> - Since the p-value is less than 0.05, we reject the null hypothesis. The average message length of Javascript readme files is significantly different than the average message length of all other readme files.
 
 #### Hypothesis 2
 > - H<sub>0</sub>: The average compound sentiment analysis of Javascript readme files == The average compound sentiment analysis of all other readme files.
 > - H<sub>a</sub>: The average compound sentiment analysis of Javascript readme files != The average compound sentiment analysis of all other readme files.
+> - alpha = 0.05
 
-alpha = 0.05
-
-Outcome: Since the p-value is less than alpha, we reject the null hypothesis. The average compound sentiment analysis score for Javascript readme files is significantly different than the average compound sentiment analysis score for all other readme files.
+> - Since the p-value is less than alpha, we reject the null hypothesis. The average compound sentiment analysis score for Javascript readme files is significantly different than the average compound sentiment analysis score for all other readme files.
 
 #### Hypothesis 3
 > - H<sub>0</sub>: The average avg_word_len of Javascript readme files == The average avg_word_len of all other readme files.
 > - H<sub>a</sub>: The average avg_word_len of Javascript readme files != The average avg_word_len of all other readme files.
+> - alpha = 0.05
 
-alpha = 0.05
-
-Outcome: Since the p-value is less than 0.05, we reject the null hypothesis. The average avg_word_len for Javascript readme files is significantly different than the average avg_word_len of all other readme files.
+> - Since the p-value is less than 0.05, we reject the null hypothesis. The average avg_word_len for Javascript readme files is significantly different than the average avg_word_len of all other readme files.
 
 #### Hypothesis 4
 > - H<sub>0</sub>: The average avg_word_len of Javascript readme files == The average avg_word_len of all other readme files.
 > - H<sub>a</sub>: The average avg_word_len of Javascript readme files != The average avg_word_len of all other readme files.
+> - alpha = 0.05
 
-alpha = 0.05
-
-Outcome: Since the p-value is less than 0.05, we reject the null hypothesis. The average word_count for Javascript readme files is significantly different than the average word_count of all other readme files.
+> - Since the p-value is less than 0.05, we reject the null hypothesis. The average word_count for Javascript readme files is significantly different than the average word_count of all other readme files.
 
 <a name='modeling'></a>
 ## Modeling & Evaluation
@@ -233,6 +226,14 @@ Outcome: Since the p-value is less than 0.05, we reject the null hypothesis. The
 <a name='presentation'></a>
 ### Presentation
 > - 
+
+### Conclusion and Next Steps
+> -
+> -
+
+### Replication
+> -
+> -
 
 
 <div style="text-align: right"><a href='#toc'>Table of Contents</a></div>
