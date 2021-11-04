@@ -62,7 +62,7 @@
 ## Executive Summary
 > - 30,000 repository README files were scraped from Github.
 > - Javascript files were analyzed and compared against all other README files.
-> - Our model performed well, identifying Javascript repositories with an accuracy of over 90%.
+> - Our model performed well, identifying Javascript repositories with an accuracy of over 94.8%.
 
 <a name='goals'></a>
 ### Goals
@@ -224,21 +224,15 @@ We would also parse up to the first 30 repository destinations from that user. T
 <a name='delivery'></a>
 ## Project Delivery
 ✓ _Plan_ ➜ ✓ _Acquire_ ➜ ✓ _Prepare_ ➜ ✓ _Explore_ ➜ ✓ _Model_ ➜ 🟢 **Deliver**
-> - 
-> - 
-
-<a name='presentation'></a>
-### Presentation
-> - 
 
 ### Conclusion and Next Steps
-> - Javascript repository README files have consistent, identifying characteristics such as average word length, message length, and word count.
+> - Javascript repository `README` files have consistent, identifying characteristics such as average word length, message length, and word count.
 > - With more time, we would like to build a multi-class classification model and do more feature engineering.
 
 ### Replication
-> - Download the acquire_c.py, prepare_c.py, explore_c.py, and model_m.py modules to your working directory.
-> - Download the 'javascript_clean_readme_100_z0_5.csv' dataset from Kaggle.
-> - Run the final_report jupyter notebook.
+> - Download the `acquire.py`, `prepare.py`, `explore.py`, and `model.py` modules to your working directory.
+> - Download the all files from dataset which can be found at <a href='https://www.kaggle.com/shankanater/data-to-recreate-nlp-project/download'>Kaggle</a>
+> - Run the `final_report.ipynb` Juypter Notebook.
 
 
 <div style="text-align: right"><a href='#toc'>Table of Contents</a></div>
