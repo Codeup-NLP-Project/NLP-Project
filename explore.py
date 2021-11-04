@@ -11,7 +11,7 @@ from wordcloud import WordCloud
 plt.rc('figure', figsize=(13, 7))
 plt.style.use('seaborn-darkgrid')
 
-from prepare_c import *
+from prepare import *
 
 class NLP_explore():
     '''Explores some plots and other features and frequencies, bigrams of 

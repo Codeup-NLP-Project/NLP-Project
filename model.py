@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 
-from prepare_c import *
+from prepare import *
 
 
 from sklearn.neighbors import KNeighborsClassifier
