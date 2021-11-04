@@ -74,6 +74,7 @@
 > - The average compound sentiment analysis score for Javascript readme files is significantly different than the average compound sentiment analysis score for all other readme files.
 > - The average avg_word_len for Javascript readme files is significantly different than the average avg_word_len of all other readme files.
 > - The average word_count for Javascript readme files is significantly different than the average word_count of all other readme files.
+> - The best preforming model, a Multinomial Naive Bayes classifier, achieved an out-of-sample test accuracy of 94.8%
 
 <div style="text-align: right"><a href='#toc'>Table of Contents</a></div>
 <hr style="border-top: 10px groove tan; margin-top: 1px; margin-bottom: 1px"></hr>
