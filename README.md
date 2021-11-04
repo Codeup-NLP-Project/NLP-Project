@@ -146,40 +146,45 @@ We would also parse up to the first 30 repository destinations from that user. T
 
 ### Horizontal Barplots
 
-|<center>Javascript</center>|<center>Others</center>|
+|<center>Javascript</center>|<center>Non-Javascript</center>|
 |:-:|:-:|
 |![Javascript_Horizontal_Plot](images/javascript_word_freq_hplot.png)|![Not_Javascript_Horizontal_Plot](images/not_javascript_word_freq_hplot.png)|
 
 ### Stacked Horizontal Barplots
 
-|<center>Javascript</center>|<center>Others</center>|
+|<center>Javascript</center>|<center>Non-Javascript</center>|
 |:-:|:-:|
 |![Javascript_Stacked_Horizontal_Plot](images/javascript_stacked_bplot.png)|![Not_Javascript_Stacked_Horizontal_Plot](images/not_javascript_stacked_bplot.png)|
 
 ### Bigram Plots
 
-|<center>Javascript</center>|<center>Others</center>|
+|<center>Javascript</center>|<center>Non-Javascript</center>|
 |:-:|:-:|
 |![Javascript_Bigrams_Plot](images/javascript_2_gram.png)|![Not_Javascript_Bigrams_Plot](images/not_javascript_2_gram.png)|
 
 ### Trigram Plots
 
-|<center>Javascript</center>|<center>Others</center>|
+|<center>Javascript</center>|<center>Non-Javascript</center>|
 |:-:|:-:|
 |![Javascript_Trigrams_Plot](images/javascript_3_gram.png)|![Not_Javascript_Trigrams_Plot](images/not_javascript_3_gram.png)|
 
 ### Wordcloud Plots
 
-|<center>Javascript</center>|<center>Others</center>|
+|<center>Javascript</center>|<center>Non-Javascript</center>|
 |:-:|:-:|
 |![Javascript_Wordcloud_Plot](images/javascript_wordcloud.png)|![Not_Javascript_Wordcloud_Plot](images/not_javascript_wordcloud.png)|
 
+### Wordcloud Plots
+
+|<center>Javascript</center>|<center>Non-Javascript</center>|
+|:-:|:-:|
+|![Javascript_Wordcloud_Plot](images/javascript_wordcloud.png)|![Not_Javascript_Wordcloud_Plot](images/not_javascript_wordcloud.png)|
 
 <a name='explore_takeaways'></a>
 ### Explore Takeaways
 
 > - The top 5 most common words in Javascript readme files occur in Javascript files much more frequently than all other readme files.
-> - Javascript sentiment analysis compound scores tend to be more positive than all others, while all others tend to be more neutral than Javascript.
+> - Javascript sentiment analysis compound scores tend to be more positive than all Non-Javascript, while all Non-Javascript tend to be more neutral than Javascript.
 
 <div style="text-align: right"><a href='#toc'>Table of Contents</a></div>
 <hr style="border-top: 10px groove tan; margin-top: 1px; margin-bottom: 1px"></hr>
