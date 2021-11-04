@@ -17,15 +17,12 @@
     1. [Distributions](#distributions)
     2. [Prepare Takeaways](#prepare_takeaways)
 5. [Data Exploration](#explore)
-    1. [Correlations](#correlations)
-    2. [Pairplot](#pairplot)
-    3. [Explore Takeaways](#explore_takeaways)
-6. [Hypothesis](#hypothesis)
-    1. [Conclusion](#hyp_conclusion)
-7. [Modeling & Evaluation](#modeling)
+    1. [Explore Takeaways](#explore_takeaways)
+    2. [Hypothesis](#hypothesis)
+6. [Modeling & Evaluation](#modeling)
     1. [Term Frequency](#term_freq)
     2. [Inverse Document Frequency](#inverse_doc_freq)
-8. [Project Delivery](#delivery)
+6. [Project Delivery](#delivery)
     1. [Presentation](#presentation)
 
 <hr style="border-top: 10px groove tan; margin-top: 5px; margin-bottom: 5px"></hr>
@@ -146,6 +143,36 @@ We would also parse up to the first 30 repository destinations from that user. T
 > - We compared word, bigram, and trigram counts and created visualizations for each.
 > - We created visualizations for the distributions of the compound sentiment analysis score.
 > - We created word clouds for quick visualization of the most common words.
+
+### Horizontal Barplots
+
+|<center>Javascript</center>|<center>Others</center>|
+|:-:|:-:|
+|![Javascript_Horizontal_Plot](images/javascript_word_freq_hplot.png)|![Not_Javascript_Horizontal_Plot](images/not_javascript_word_freq_hplot.png)|
+
+### Stacked Horizontal Barplots
+
+|<center>Javascript</center>|<center>Others</center>|
+|:-:|:-:|
+|![Javascript_Stacked_Horizontal_Plot](images/javascript_stacked_bplot.png)|![Not_Javascript_Stacked_Horizontal_Plot](images/not_javascript_stacked_bplot.png)|
+
+### Bigram Plots
+
+|<center>Javascript</center>|<center>Others</center>|
+|:-:|:-:|
+|![Javascript_Bigrams_Plot](images/javascript_2_gram.png)|![Not_Javascript_Bigrams_Plot](images/not_javascript_2_gram.png)|
+
+### Trigram Plots
+
+|<center>Javascript</center>|<center>Others</center>|
+|:-:|:-:|
+|![Javascript_Trigrams_Plot](images/javascript_3_gram.png)|![Not_Javascript_Trigrams_Plot](images/not_javascript_3_gram.png)|
+
+### Wordcloud Plots
+
+|<center>Javascript</center>|<center>Others</center>|
+|:-:|:-:|
+|![Javascript_Wordcloud_Plot](images/javascript_wordcloud.png)|![Not_Javascript_Wordcloud_Plot](images/not_javascript_wordcloud.png)|
 
 
 <a name='explore_takeaways'></a>
