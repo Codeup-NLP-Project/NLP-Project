@@ -224,6 +224,7 @@ We would also parse up to the first 30 repository destinations from that user. T
 <a name='model_takeaways'></a>
 ### Modeling Takeaways
 
+> - Baseline score of 84.0% based on most common label
 > - Got best performance from classifiers with K-Folds set to 10.
 > - The best performing classifier types were Multinomial Naive Bayes classifiers with alpha = 0.5, averaging 94.13% across all cross-validate splits.
 > - Best single model accuracy score on a cross-validation test (validate) subset from was 95.42%
